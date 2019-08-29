@@ -29,11 +29,11 @@ public class User implements Serializable{
 	
 	@NotNull
 	@Email
-	@Column(name="email")
+	@Column(name="email",unique=true)
 	private String email;
 	
 	@NotNull
-	@JsonIgnore
+	//@JsonIgnore//diz que o campo é obrigatório
 	@Column(name="password")
 	private String password;
 	
