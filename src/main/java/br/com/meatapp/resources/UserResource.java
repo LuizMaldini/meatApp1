@@ -71,8 +71,20 @@ public class UserResource {//aqui recebe a requisição e redireciona para o ser
 				.buildAndExpand(user.getId())
 				.toUri();//construção da uri/caminho
 		
-		return ResponseEntity.created(uri).body(user);
-		
+		return ResponseEntity.created(uri).body(user);	
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
+	public ResponseEntity<Void> update(@Valid @RequestBody User user, @PathVariable Integer id){
+		user.setId(id);//para garantir que não será sem id
+		user = userService.update(user, id);
+		return ResponseEntity.noContent().build();	
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/id/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		userService.delete(id);
+		return ResponseEntity.noContent().build();	
 	}
 
 }

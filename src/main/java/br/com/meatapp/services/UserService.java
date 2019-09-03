@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.meatapp.domain.User;
+import br.com.meatapp.exception.DataIntegrityException;
 import br.com.meatapp.exception.ObjectNotFoundException;
 import br.com.meatapp.repositories.UserRepository;
 
@@ -62,4 +64,27 @@ public class UserService {
 		user.setId(null);//para garantir que será sempre insert
 		return userRepository.save(user);
 	}
+	
+	public User update(User user, Integer id) {
+		return userRepository.save(user);
+		
+	}
+	
+	public void delete(Integer id) {
+		this.findByID(id);//se existir vai deletar, caso contrario chama a excessão do try
+		try {
+		userRepository.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Ocorreu um erro de integridade. Este usuário já possui pedidos");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
